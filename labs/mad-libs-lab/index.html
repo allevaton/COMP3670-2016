@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title></title>
+  <script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+        integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+        integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+          integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+          crossorigin="anonymous"></script>
+
+  <style type="text/css" media="screen">
+    .fillin {
+      display: inline-block;
+    }
+
+    .fillin input {
+      display: block;
+    }
+
+    .fillin > label {
+      float: left;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      width: inherit;
+    }
+  </style>
+
+  <script type="text/javascript" charset="utf-8">
+    var text = 'Hello, my name is [name] . I have a [color] shirt on .';
+
+    function generateFillin(id, name) {
+      return '<div class="fillin"><input type="text" id="' + id + '"/>' +
+        '<label>' + name + '</label></div>';
+    }
+
+    function replaceText(element) {
+      var id = 0;
+      $(element).find('span').each(function (id, e) {
+        var $e = $(e);
+        var match = $e.text().match(/\[([A-z0-9]+)\]/);
+        if (match) {
+          $(e).html(generateFillin(id, match[1]));
+        }
+      });
+    }
+
+    $(function () {
+      var main = $('#main');
+      text.split(/\s+/).forEach(function (word) {
+        main.append($('<span>').text(word + ' '));
+      });
+      replaceText('#main');
+    });
+
+  </script>
+</head>
+<body>
+<p id="main"></p>
+</body>
+</html>
