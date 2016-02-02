@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+      var text = `Be kind to your [noun1]-footed [noun2]<br>
+      For a duck may be somebody's [noun3],<br>
+      Be kind to your [noun2] in [place1]<br>
+      Where the weather is always [adjective1]<br>
+      You may think that is the [noun4],<br>
+      Well it is.`;
+
+      var words = {};
+      function form_submit () {
+        var canContinue = true;
+        $('input:text').each(function (_, e) {
+          var $el = $(e);
+          if ($el.val().length == 0) {
+            canContinue = false;
+            $el.parent('label').removeClass('has-success');
+            $el.parent('label').addClass('has-error');
+          }
+          else {
+            $el.parent('label').addClass('has-success');
+            $el.parent('label').removeClass('has-error')
+          }
+        });
+
+        if (canContinue) {
+          $('#error-text').hide();
+          replaceText('#result');
+        }
+        else {
+          $('#error-text').show();
+        }
+      }
+
+      $(document).on('input', 'input', function (e) {
+        var $el = $(e.currentTarget);
+        words[$el.attr('id')] = $el.val();
+      });
+
+      function replaceText(element) {
+        var id = 0;
+        var newText = text.replace(/\[([A-z0-9]+)\]/g, function (matched, item, string) {
+          return words[item];
+        });
+        $(element).html(newText);
+      }
+    </script>
+  </head>
+  <body>
+    <form>
+      <div class="container">
+        <div class="row">
+          <h2>Fill in the boxes appropriately, then click "Done"</h2>
+        </div>
+        <div class="col-md-4">
+          <!-- maybe this would be better without handlebars... -->
+          {{#each words}}
+            <div class="row">
+              <label>{{this.[1]}}
+                <input class="form-control" type="text" id="{{this.[0]}}"placeholder="{{this.[1]}}" size="30"/>
+              </label>
+            </div>
+          {{/each}}
+          <div class="row">
+            <input class="btn btn-default" type="button" onclick="form_submit()" value="Done" /> <span class="text-danger" id="error-text" style="display:none">You must enter something for each field</span>
+          </div>
+        </div>
+
+        <div class="col-md-8">
+          <div class="row">
+            <h3 id="result"></h3>
+          </div>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>
